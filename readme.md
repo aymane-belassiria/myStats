@@ -1,3 +1,1 @@
 # MyStats
-
-![logo](./logo.png)
