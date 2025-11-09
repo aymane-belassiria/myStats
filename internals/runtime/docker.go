@@ -42,3 +42,11 @@ func (d *DockerRuntime) ListContainers() ([]Container, error) {
 
 	return result, nil
 }
+
+func (d *DockerRuntime) GetContainerByPID(pid string) (int, error) {
+	container, err := d.cli.ContainerInspect(context.Background(), pid, client.ContainerInspectOptions{Size: false})
+	if err != nil {
+		return 0, err
+	}
+	return container.Container.State.Pid, nil
+}
