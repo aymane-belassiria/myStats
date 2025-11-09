@@ -17,7 +17,7 @@ func main() {
 	if *pidFlag != "" {
 		c, err := rt.GetContainerByPID(*pidFlag)
 		if err != nil {
-			log.Fatalf("Error getting PID for container %s: %v", *pidFlag, err)
+			log.Fatalf("Error getting container info for %s: %v", *pidFlag, err)
 		}
 		fmt.Printf("- %s - %s - %s - (%s)\n", c.Name, c.Image, c.ImageID, c.ID)
 		return
