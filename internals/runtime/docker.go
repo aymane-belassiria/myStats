@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/moby/moby/client"
 )
@@ -43,10 +44,19 @@ func (d *DockerRuntime) ListContainers() ([]Container, error) {
 	return result, nil
 }
 
-func (d *DockerRuntime) GetContainerByPID(pid string) (int, error) {
+func (d *DockerRuntime) GetContainerByPID(pid string) (*Container, error) {
 	container, err := d.cli.ContainerInspect(context.Background(), pid, client.ContainerInspectOptions{Size: false})
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return container.Container.State.Pid, nil
+	if container.Container.State == nil {
+		return nil, fmt.Errorf("Container with pid %s has no state info", pid)
+	}
+	info := &Container{
+		ID:      container.Container.ID,
+		Name:    container.Container.Name[1:],
+		Image:   container.Container.Config.Image,
+		ImageID: container.Container.Image,
+	}
+	return info, nil
 }
