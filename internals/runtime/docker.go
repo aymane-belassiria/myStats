@@ -50,7 +50,7 @@ func (d *DockerRuntime) GetContainerByPID(pid string) (*Container, error) {
 		return nil, err
 	}
 	if container.Container.State == nil {
-		return nil, fmt.Errorf("Container with pid %s has no state info", pid)
+		return nil, fmt.Errorf("Container with ID %s has no state info", pid)
 	}
 	info := &Container{
 		ID:      container.Container.ID,
